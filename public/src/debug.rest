@@ -1,0 +1,18 @@
+###### Debug Documentos
+GET https://ranascreativas.com/universidad/api/public/debug/documentosDebug?code=J0rg32!0683
+content-type: application/json
+
+
+###### Debug Documentos Orden
+GET https://ranascreativas.com/universidad/api/public/debug/documentosOrdenDebug?code=J0rg32!0683
+content-type: application/json
+
+
+###### Debug Documentos (LIVE)
+GET https://plataforma.fldch.edu.mx/public/debug/documentosDebug?code=J0rg32!0683
+content-type: application/json
+
+
+###### Debug Documentos Orden (LIVE)
+GET https://plataforma.fldch.edu.mx/public/debug/documentosOrdenDebug?code=J0rg32!0683
+content-type: application/json
