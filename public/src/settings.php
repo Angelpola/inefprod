@@ -16,7 +16,7 @@ if(strpos($_SERVER['HTTP_HOST'], 'localhost')  !== false){
                  'host' => '34.68.63.8',
                  'user' => 'inef-bd',
                  'pass' => '1gS{kLQ]>tJS3<g',
-                 'dbname' => 'fldch'
+                 'dbname' => 'plat_inef'
 	 ],*/
             // Renderer settings
             'renderer' => [

@@ -29,14 +29,14 @@ if(strpos($_SERVER['HTTP_HOST'], 'ranascreativas')  !== false){
 }
 
 
-$redondearCalculosCalificacionesFinales = false;
+$redondearCalculosCalificacionesFinales = true;
 $isINEF = false;
 $nombreInstituto = 'Facultad Libre de Derecho de Chiapas';
 $_indicacionInstituto = 'de la';
 $claveInstitulo = '07PSU0128K';
 $inicialesInstituto = 'FLDCH';
 $logoInstituto = 'https://plataforma.fldch.edu.mx/assets/images/logo-fldch-rojo.png';
-if($_SERVER['SERVER_ADDR'] == '35.184.115.134') {
+if($_SERVER['SERVER_ADDR'] == '192.168.12.83') {
     $isINEF = true;
     $nombreInstituto = 'Instituto Nacional de Estudios Fiscales';
     $_indicacionInstituto = 'del';

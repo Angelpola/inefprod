@@ -383,11 +383,11 @@ $app->group('/evaalumnos', function () {
 
         $sth = $this->db->prepare($query);
         $sth->execute();
+        $copiedEvaID = $this->db->lastInsertId();
 
         $dblog->where = array('col_id' => intval($this->db->lastInsertId()));
         $dblog->saveLog();
 
-        $copiedEvaID = $this->db->lastInsertId();
 
         $queryx = "SELECT * FROM tbl_eva_alumnos_preguntas WHERE col_evaid='".$input->id."' ORDER BY col_id ASC";
         $sth = $this->db->prepare($queryx);
