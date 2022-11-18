@@ -517,7 +517,7 @@ function acreditaMEClubLectura($alumnoid, $actividadid, $db) {
 
     switch($dataActividad->col_tipo){
         case 6:
-        $sth = $db->prepare('SELECT * FROM tbl_actividades WHERE col_visible_excepto="'.addslashes($dataActividad->col_visible_excepto).'" AND col_tipo=5');
+        $sth = $db->prepare('SELECT * FROM tbl_actividades WHERE col_visible_excepto="'.addslashes($dataActividad->col_visible_excepto).'" AND col_materiaid="'.$dataActividad->col_materiaid.'" AND col_tipo=5');
         $sth->execute();
         $tbt__dataActividad = $sth->fetch(PDO::FETCH_OBJ);
         $rangoFechaInicio = date('Y-m-d', strtotime('+1 day'. $tbt__dataActividad->col_fecha_inicio));
@@ -659,6 +659,7 @@ function acreditaMEClubLectura($alumnoid, $actividadid, $db) {
         $result['reduccion'] = 100;
         $result['deudas'] = $deudas['status'];
         $result['falsifico'] = $falsifico;
+        $result['debugAsistencias'] = $asistencias;
     }
 
     return $result;
@@ -854,7 +855,7 @@ function acreditaMETransversales($alumnoid, $actividadid, $db) {
 
 }
 
-function acreditaMEPracticas($alumnoid, $actividadid, $tipo, $db) {
+function acreditaMEPracticas($alumnoid, $actividadid = 0, $tipo, $db) {
 
     $query = 'SELECT * FROM tbl_config WHERE col_id="1"';
     $c = $db->prepare($query);
@@ -864,6 +865,13 @@ function acreditaMEPracticas($alumnoid, $actividadid, $tipo, $db) {
         // Todos acreditan por COVID-19 29 de Abril de 2020
         $result['acredita'] = 'A';
         $result['reduccion'] = 0;
+
+        return $result;
+    }
+
+    if(intval($actividadid) == 0) {
+        $result['acredita'] = 'NA';
+        $result['reduccion'] = 100;
 
         return $result;
     }

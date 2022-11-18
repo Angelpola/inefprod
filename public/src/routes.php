@@ -1889,9 +1889,9 @@ function get_AsistenciasByAlumnoAndMateria($alumnoid, $db, $_fechaLimite = '', $
         if(substr($taxData->col_materia_clave, 0, 2) == 'AC' || substr($taxData->col_materia_clave, 0, 2) == 'TL'){
 
 
-            $queryAlt = 'SELECT col_id FROM tbl_materias WHERE col_clave LIKE "'.claveMateria($taxData->col_materia_clave).'%" AND col_semestre="'.$periodoDataAlumno->col_grado.'" AND col_carrera="'.$periodoData->col_carreraid.'" AND col_plan_estudios="'.$periodoData->col_plan_estudios.'"';
+            $queryAlt = 'SELECT col_id FROM tbl_materias WHERE col_clave="'.$taxData->col_materia_clave.'" AND col_semestre="'.$periodoDataAlumno->col_grado.'" AND col_carrera="'.$periodoData->col_carreraid.'" AND col_plan_estudios="'.$periodoData->col_plan_estudios.'"';
 
-            $query = 'SELECT * FROM tbl_materias WHERE LENGTH(col_clave)>'.strlen(claveMateria($taxData->col_materia_clave)).' AND col_clave LIKE "'.claveMateria($taxData->col_materia_clave).'%" AND col_semestre="'.$periodoDataAlumno->col_grado.'" AND col_carrera="'.$periodoData->col_carreraid.'" AND col_plan_estudios="'.$periodoData->col_plan_estudios.'"';
+            $query = 'SELECT * FROM tbl_materias WHERE col_clave = "'.$taxData->col_materia_clave.'" AND col_semestre="'.$periodoDataAlumno->col_grado.'" AND col_carrera="'.$periodoData->col_carreraid.'" AND col_plan_estudios="'.$periodoData->col_plan_estudios.'"';
 
             $sth = $db->prepare($query);
             $sth->execute();
@@ -3292,7 +3292,7 @@ function getLogo($tipo = 'default', $svg = false) {
     }
 
 
-    if($_SERVER['SERVER_ADDR'] == '37.247.52.225') {
+    if($_SERVER['SERVER_ADDR'] == '216.250.112.56') {
         $imgURL = "https://ranascreativas.com/universidad/src".$img;
     }else{
         $imgURL = "http://192.168.12.81".$img;
