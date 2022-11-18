@@ -215,6 +215,7 @@ function acreditaMEAcademias($alumnoid, $actividadid, $db) {
 
     $calificacion = corregirCalificacion($dataActividad->col_calificacion);
     $result['examenAcademia'] = $dataActividad->col_actividadid;
+    $result['examenAcademiaDebug'] = $dataActividad;
 
 
     $sth = $db->prepare('SELECT * FROM tbl_actividades WHERE col_id="'.$dataActividad->col_actividadid.'"');
@@ -246,11 +247,8 @@ function acreditaMEAcademias($alumnoid, $actividadid, $db) {
 
     $falsifico = 'no';
     $subQuery = 'SELECT col_id FROM tbl_actividades WHERE col_fecha_inicio<"'.$queryFechaInicio.'" AND col_visible_excepto LIKE "%'.$claveAC.'%"';
-    $query = 'SELECT * FROM tbl_actividades_tareas WHERE col_alumnoid="'.$alumnoid.'" AND col_actividadid IN ('.$subQuery.') AND col_falsificacion=1';
-    // if($alumnoid == 210) {
-    //     echo $query;exit;
-    // }
-    $sth = $db->prepare($query);
+    $queryFalsifico = 'SELECT * FROM tbl_actividades_tareas WHERE col_alumnoid="'.$alumnoid.'" AND col_actividadid IN ('.$subQuery.') AND col_falsificacion=1';
+    $sth = $db->prepare($queryFalsifico);
     $sth->execute();
     if($sth->rowCount() > 0) $falsifico = 'si';
     $la__dataActividad = $sth->fetch(PDO::FETCH_OBJ);
@@ -304,7 +302,9 @@ function acreditaMEAcademias($alumnoid, $actividadid, $db) {
         $result['reduccion'] = 100;
         $result['deudas'] = $deudas['status'];
         $result['falsifico'] = $falsifico;
+        //$result['falsificoQuery'] = $queryFalsifico;
         $result['razon'] = 'asistencias';
+        // $result['razonDebug'] = 'Porcentaje de asistencias menor a 80 ('.intval($result['asistenciasPorcentaje']).')';
     }
 
     if($dataActividad->col_sd == 1 && $dataActividad->col_sd_razon != '') {
@@ -313,6 +313,7 @@ function acreditaMEAcademias($alumnoid, $actividadid, $db) {
         $result['deudas'] = $deudas['status'];
         $result['falsifico'] = $falsifico;
         $result['razon'] = 'db';
+        // $result['razonDebug'] = 'Tiene SD en DB';
     }
     return $result;
 }
@@ -516,7 +517,7 @@ function acreditaMEClubLectura($alumnoid, $actividadid, $db) {
 
     switch($dataActividad->col_tipo){
         case 6:
-        $sth = $db->prepare('SELECT * FROM tbl_actividades WHERE col_visible_excepto="'.addslashes($dataActividad->col_visible_excepto).'" AND col_tipo=5');
+        $sth = $db->prepare('SELECT * FROM tbl_actividades WHERE col_visible_excepto="'.addslashes($dataActividad->col_visible_excepto).'" AND col_materiaid="'.$dataActividad->col_materiaid.'" AND col_tipo=5');
         $sth->execute();
         $tbt__dataActividad = $sth->fetch(PDO::FETCH_OBJ);
         $rangoFechaInicio = date('Y-m-d', strtotime('+1 day'. $tbt__dataActividad->col_fecha_inicio));
@@ -658,6 +659,7 @@ function acreditaMEClubLectura($alumnoid, $actividadid, $db) {
         $result['reduccion'] = 100;
         $result['deudas'] = $deudas['status'];
         $result['falsifico'] = $falsifico;
+        $result['debugAsistencias'] = $asistencias;
     }
 
     return $result;
@@ -853,7 +855,7 @@ function acreditaMETransversales($alumnoid, $actividadid, $db) {
 
 }
 
-function acreditaMEPracticas($alumnoid, $actividadid, $tipo, $db) {
+function acreditaMEPracticas($alumnoid, $actividadid = 0, $tipo, $db) {
 
     $query = 'SELECT * FROM tbl_config WHERE col_id="1"';
     $c = $db->prepare($query);
@@ -867,10 +869,17 @@ function acreditaMEPracticas($alumnoid, $actividadid, $tipo, $db) {
         return $result;
     }
 
+    if(intval($actividadid) == 0) {
+        $result['acredita'] = 'NA';
+        $result['reduccion'] = 100;
+
+        return $result;
+    }
+
 
     // if($tipo == 5) $reportes = 6;
     if($tipo == 5) $reportes = 3; // Se definio el numero de practicas a 3 como apoyo extraordinario por la contingencia del COVID-19, pasando esto deberia reestablecerse a 6
-    if($tipo == 6) $reportes = 5;
+    if($tipo == 6) $reportes = 4;
     if($tipo == 7) $reportes = 0;
     $query = 'SELECT * FROM tbl_alumnos WHERE col_id="'.$alumnoid.'"';
     $sth = $db->prepare($query);
