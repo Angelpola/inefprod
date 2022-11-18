@@ -1120,8 +1120,6 @@ $app->group('/actividades', function () {
             $result['grupo'] = '-1'; // Todos los grupos
         }
 
-        $result['periodoData->col_modalidad'] = $periodoData->col_id;
-
 
         // $query = 'SELECT * FROM tbl_actividades_tareas WHERE col_actividadid="'.intval($_REQUEST['id']).'"';
         // $sth = $this->db->prepare($query);

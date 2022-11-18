@@ -347,11 +347,6 @@ $app->group('/usuarios', function () {
             $fth = $this->db->prepare($query);
             $fth->execute();
             $file = $fth->fetch(PDO::FETCH_OBJ);
-            if(!$file) {
-                $queryInsertMaestro = 'INSERT INTO tbl_maestros (col_userid) VALUES('.$input->id.')';
-                $insertMaestro = $this->db->prepare($queryInsertMaestro);
-                $insertMaestro->execute();
-            }
             $currentMaestro = $file;
 
             $source_fileCV = uploadFile($input->fileCV, $currentMaestro->fileCV, 'docmaestro');
@@ -505,9 +500,6 @@ $app->group('/usuarios', function () {
             col_updated_at="'.date("Y-m-d H:i:s").'",
             col_updated_by="'.$input->userid.'" WHERE col_id="'.$input->id.'"';
         }
-
-        $lastUserid = $input->id;
-
         $dblog = new DBLog($query, 'tbl_users', '', '', 'Usuarios', $this->db);
         $dblog->where = array('col_id' => intval($input->id));
         $dblog->prepareLog();
@@ -731,13 +723,12 @@ $app->group('/usuarios', function () {
 
 
         if($sth->execute()){
-            $lastInsertId = $this->db->lastInsertId();
             $dblog->where = array('col_id' => intval($this->db->lastInsertId()));
             $dblog->saveLog();
 
             if($input->esMaestro == 1){
                 $query = 'INSERT INTO tbl_maestros (col_userid, col_costo_clase, col_costo_clase_academia, col_costo_clase_postgrado, col_contratado, col_created_at, col_created_by, col_updated_at, col_updated_by)
-                VALUES("'.$lastInsertId.'", "'.$input->costoClase.'", "'.$input->costoClaseAcademia.'", "'.$input->costoClasePostrado.'", "'.$input->contratado.'", "'.date("Y-m-d H:i:s").'", "'.$input->userid.'", "'.date("Y-m-d H:i:s").'", "'.$input->userid.'")';
+                VALUES("'.$this->db->lastInsertId().'", "'.$input->costoClase.'", "'.$input->costoClaseAcademia.'", "'.$input->costoClasePostrado.'", "'.$input->contratado.'", "'.date("Y-m-d H:i:s").'", "'.$input->userid.'", "'.date("Y-m-d H:i:s").'", "'.$input->userid.'")';
 
                 $dblog = new DBLog($query, 'tbl_maestros', '', '', 'Maestros', $this->db);
                 $dblog->prepareLog();
