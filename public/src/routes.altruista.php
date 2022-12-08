@@ -444,7 +444,9 @@ $app->group('/altruista', function () {
 
                 $sth = $this->db->prepare($query);
                 $sth->execute();
+                $lastID = intval($this->db->lastInsertId());
 
+                $dblog->where = array('col_id' => $lastID);
                 $dblog->saveLog();
 
                 $a++;
@@ -461,7 +463,9 @@ $app->group('/altruista', function () {
 
                     $sth = $this->db->prepare($query);
                     $sth->execute();
+                    $lastID = intval($this->db->lastInsertId());
 
+                    $dblog->where = array('col_id' => $lastID);
                     $dblog->saveLog();
 
                     $a++;
@@ -474,6 +478,7 @@ $app->group('/altruista', function () {
             }
         }
 
+
         for($i = 0; $i < intval($input->qty); $i++){
             $query = 'INSERT INTO tbl_altruista (col_group_periodoid, col_grupo, col_created_by, col_created_at, col_updated_by, col_updated_at) VALUES("'.$input->periodo.'", "'.($i + 1).'", "'.$userID.'", "'.date("Y-m-d H:i:s").'", "'.$userID.'", "'.date("Y-m-d H:i:s").'")';
 
@@ -483,11 +488,13 @@ $app->group('/altruista', function () {
             $sth = $this->db->prepare($query);
             $sth->execute();
 
+            $lastID = intval($this->db->lastInsertId());
+            $dblog->where = array('col_id' => $lastID);
             $dblog->saveLog();
         }
 
         $_response['grupos'] = $grupos;
-        $_response['alumnos'] = $_alumnos;
+        $_response['alumnos'] = $alumnos;
 
         return $this->response->withJson($_response);
 

@@ -2285,7 +2285,7 @@ $app->group('/actividades', function () {
         $query = 'INSERT INTO tbl_actividades ('.implode(",", array_keys($data)).')
         VALUES("'.implode('", "', array_values($data)).'")';
 
-        $dblog = new DBLog($query, 'tbl_actividades_tareas', '', '', 'Actividades', $this->db, 'Se creo uno actividad');
+        $dblog = new DBLog($query, 'tbl_actividades', '', '', 'Actividades', $this->db, 'Se creo uno actividad');
         $dblog->prepareLog();
 
         $sth = $this->db->prepare($query);
@@ -2334,11 +2334,12 @@ $app->group('/actividades', function () {
         $dblog->prepareLog();
 
         $sth = $this->db->prepare($query);
-        if($sth->execute() && $archivo){
+        if($sth->execute()){
             $dblog->saveLog();
-
+            if($archivo) {
             if(@file_exists($uploaddir.$archivo)){
                 @unlink($uploaddir.$archivo);
+            }
             }
         }
 

@@ -126,7 +126,7 @@ $app->group('/evaalumnos', function () {
     });
 
     $this->put('/updateEva', function (Request $request, Response $response, $args) {
-        $dblog->saveLog();
+        global $dblog;
 
         $userid = getCurrentUserID();
         $_response['status'] = 'false';

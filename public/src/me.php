@@ -514,18 +514,17 @@ function acreditaMEClubLectura($alumnoid, $actividadid, $db) {
     }
     $queryFechaInicio = $rangoFechaFin = $dataActividad->col_fecha_inicio;
 
-
     switch($dataActividad->col_tipo){
         case 6:
-        $sth = $db->prepare('SELECT * FROM tbl_actividades WHERE col_visible_excepto="'.addslashes($dataActividad->col_visible_excepto).'" AND col_materiaid="'.$dataActividad->col_materiaid.'" AND col_tipo=5');
+        $query = 'SELECT * FROM tbl_actividades WHERE col_visible_excepto LIKE "%'.$alumnoData->col_periodoid.'%" AND col_fecha_inicio<="'.$queryFechaInicio.'" AND col_materiaid="'.$dataMateria->col_id.'" AND col_tipo="5"';
+        // $sth = $db->prepare('SELECT * FROM tbl_actividades WHERE col_visible_excepto="'.addslashes($dataActividad->col_visible_excepto).'" AND col_materiaid="'.$dataActividad->col_materiaid.'" AND col_tipo=5');
+        $sth = $db->prepare($query);
         $sth->execute();
         $tbt__dataActividad = $sth->fetch(PDO::FETCH_OBJ);
         $rangoFechaInicio = date('Y-m-d', strtotime('+1 day'. $tbt__dataActividad->col_fecha_inicio));
         break;
 
     }
-
-
 
     $query = 'SELECT * FROM tbl_actividades WHERE col_visible_excepto LIKE "%'.$alumnoData->col_periodoid.'%" AND col_fecha_inicio<="'.$queryFechaInicio.'" AND col_materiaid="'.$dataMateria->col_id.'" AND col_tipo="'.$dataActividad->col_tipo.'"';
     $sth = $db->prepare($query);
@@ -710,7 +709,8 @@ function acreditaMETransversales($alumnoid, $actividadid, $db) {
 
     switch($dataActividad->col_tipo){
         case 6:
-        $query = 'SELECT * FROM tbl_actividades WHERE col_visible_excepto="'.addslashes($dataActividad->col_visible_excepto).'" AND col_tipo=5 AND col_materiaid="'.$materiaID.'"';
+        $query = 'SELECT * FROM tbl_actividades WHERE col_visible_excepto LIKE "%'.$alumnoData->col_periodoid.'%" AND col_fecha_inicio<="'.$queryFechaInicio.'" AND col_materiaid="'.$materiaID.'" AND col_tipo="5"';
+        // $query = 'SELECT * FROM tbl_actividades WHERE col_visible_excepto="'.addslashes($dataActividad->col_visible_excepto).'" AND col_tipo=5 AND col_materiaid="'.$materiaID.'"';
         $sth = $db->prepare($query);
         $sth->execute();
         $tbt__dataActividad = $sth->fetch(PDO::FETCH_OBJ);

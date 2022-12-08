@@ -5841,7 +5841,9 @@ class DBLog {
             $_query = "SELECT * FROM {$this->tbl} WHERE {$this->getWhere()}";
             $pdo = $this->db->prepare($_query);
             $pdo->execute();
-            $this->old_data = json_encode($pdo->fetch(PDO::FETCH_ASSOC));
+            $data = $pdo->fetch(PDO::FETCH_ASSOC);
+            if(isset($data['col_visible_excepto'])) $data['col_visible_excepto'] = json_decode(unserialize($data['col_visible_excepto']));
+            $this->old_data = json_encode($data);
         }
     }
 
@@ -5850,8 +5852,12 @@ class DBLog {
             if($this->type != 'DELETE') {
                 $_query = "SELECT * FROM {$this->tbl} WHERE {$this->getWhere()}";
                 $pdo = $this->db->prepare($_query);
+
                 $pdo->execute();
-                $this->new_data = json_encode($pdo->fetch(PDO::FETCH_ASSOC));
+                $data = $pdo->fetch(PDO::FETCH_ASSOC);
+                if(isset($data['col_visible_excepto'])) $data['col_visible_excepto'] = json_decode(unserialize($data['col_visible_excepto']));
+                //$this->new_data = json_encode($pdo->fetch(PDO::FETCH_ASSOC));
+                $this->new_data = json_encode($data);
             }
             $this->finish();
         }
@@ -5872,23 +5878,25 @@ class DBLog {
     function finish() {
         if(is_object($this->db)) {
             // $variables['col_id'] = '';
-            $variables['col_type'] = $this->type;
-            $variables['col_tbl_id'] = json_encode($this->where);
-            $variables['col_tbl'] = $this->tbl;
-            $variables['col_query'] = $this->query;
-            $variables['col_old_data'] = $this->old_data;
-            $variables['col_new_data'] = $this->new_data;
-            $variables['col_modulo'] = $this->modulo;
-            $variables['col_user_type'] = getCurrentUserData('tipoUsuario');
-            $variables['col_userid'] = getCurrentUserData('id');
-            $variables['col_datetime'] = date('Y-m-d H:i:s');
-            $variables['col_info'] = $this->info;
-            $variables['col_ip'] = getCurrentUserData('asking');
-            $variables['col_source'] = getCurrentUserData('referer');
-            $variables['col_device'] = getCurrentUserData('device');
-            $query = insert('tbl_log', $variables);
-            $sth = $this->db->prepare($query);
-            $sth->execute();
+            if(($this->old_data != '' || $this->new_data != '') && ($this->old_data != $this->new_data)) {
+                $variables['col_type'] = $this->type;
+                $variables['col_tbl_id'] = json_encode($this->where);
+                $variables['col_tbl'] = $this->tbl;
+                $variables['col_query'] = $this->query;
+                $variables['col_old_data'] = $this->old_data;
+                $variables['col_new_data'] = $this->new_data;
+                $variables['col_modulo'] = $this->modulo;
+                $variables['col_user_type'] = getCurrentUserData('tipoUsuario');
+                $variables['col_userid'] = getCurrentUserData('id');
+                $variables['col_datetime'] = date('Y-m-d H:i:s');
+                $variables['col_info'] = $this->info;
+                $variables['col_ip'] = getCurrentUserData('asking');
+                $variables['col_source'] = getCurrentUserData('referer');
+                $variables['col_device'] = getCurrentUserData('device');
+                $query = insert('tbl_log', $variables);
+                $sth = $this->db->prepare($query);
+                $sth->execute();
+            }
         }
     }
 

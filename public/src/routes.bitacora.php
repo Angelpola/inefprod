@@ -85,10 +85,12 @@ $app->group('/bitacora', function () {
         $tipos = array('INSERT' => 'INSERT', 'UPDATE' => 'UPDATE', 'DELETE' => 'DELETE');
         foreach($todos as $item){
 
-
             $fecha = explode(' ', $item['col_datetime']);
 
+
             $result[$i]['col_id'] = $item['col_id'];
+            $result[$i]['tbl'] = $item['col_tbl'];
+            $result[$i]['tbl_id'] = $item['col_tbl_id'];
             $result[$i]['modulo'] = $item['col_modulo'];
             $result[$i]['accion'] = $tipos[$item['col_type']];
             //$result[$i]['autor'] = fixEncode($autorData->col_fullname);
@@ -102,6 +104,7 @@ $app->group('/bitacora', function () {
             $result[$i]['ip'] = $item['col_ip'];
             $result[$i]['source'] = $item['col_source'];
             $result[$i]['device'] = $item['col_device'];
+
             $result[$i]['info'] = $item['col_info'];
             // array_map('stripslashes', $result[$i]);
 
