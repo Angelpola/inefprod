@@ -35,7 +35,7 @@ if($dev_inef == false) {
         'host' => '35.193.56.14',
         'user' => 'inef-bd',
         'pass' => '1gS{kLQ]>tJS3<g',
-        'dbname' => 'fldch'
+        'dbname' => 'plat_inef'
     );
 }
 if($dev_inef == true) {
@@ -43,7 +43,7 @@ if($dev_inef == true) {
         'host' => '35.193.56.14',
         'user' => 'inef-bd',
         'pass' => '1gS{kLQ]>tJS3<g',
-        'dbname' => 'fldch'
+        'dbname' => 'plat_inef'
     );
 }
 
@@ -58,7 +58,7 @@ if($dev_inef == true) {
                 'host' => '35.193.56.14', // Host del servidor al que se conecta la base de datos
                 'user' => 'fldch', // Nombre de usuario de la base de datos
                 'pass' => '7PsW6m43ARNkvgl', // Contraseña de la base de datos
-                'dbname' => 'api_fldch' // Nombre de la base de datos a la que se conecta la plataforma
+                'dbname' => 'plat_inef' // Nombre de la base de datos a la que se conecta la plataforma
             ],
             // Renderer settings
             'renderer' => [
