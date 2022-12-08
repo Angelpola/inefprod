@@ -32,7 +32,7 @@ if(strpos($_SERVER['HTTP_HOST'], 'ranascreativas')  !== false){
     ];
 if($dev_inef == false) {
     $config['settings']['db'] = Array(
-        'host' => '35.193.56.14',
+        'host' => '34.68.63.8',
         'user' => 'inef-bd',
         'pass' => '1gS{kLQ]>tJS3<g',
         'dbname' => 'plat_inef'
@@ -40,7 +40,7 @@ if($dev_inef == false) {
 }
 if($dev_inef == true) {
     $config['settings']['db'] = Array(
-        'host' => '35.193.56.14',
+        'host' => '34.68.63.8',
         'user' => 'inef-bd',
         'pass' => '1gS{kLQ]>tJS3<g',
         'dbname' => 'plat_inef'
@@ -55,7 +55,7 @@ if($dev_inef == true) {
 
             //Config DB
             'db' => [
-                'host' => '35.193.56.14', // Host del servidor al que se conecta la base de datos
+                'host' => '34.68.63.8', // Host del servidor al que se conecta la base de datos
                 'user' => 'fldch', // Nombre de usuario de la base de datos
                 'pass' => '7PsW6m43ARNkvgl', // Contraseña de la base de datos
                 'dbname' => 'plat_inef' // Nombre de la base de datos a la que se conecta la plataforma
