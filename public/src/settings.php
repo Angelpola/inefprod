@@ -4,7 +4,7 @@
  * Archivo de configuración de conexión con la base de datos de consulta de la API
  */
 $dev_inef = false;
-if(strpos($_SERVER['HTTP_HOST'], 'ranascreativas')  !== false){
+if(strpos($_SERVER['HTTP_HOST'], 'localhost')  !== false){
     $config = [
         'settings' => [
             'displayErrorDetails' => true, // set to false in production
